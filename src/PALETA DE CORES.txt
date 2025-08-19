@@ -1,6 +1,0 @@
-#760000 - vinho
-#ff0000 - vermelho
-#feef00 - amarelo
-#e55b25 - laranja
-#e63946 - vermelho claro
-#8d5524 - marrom
