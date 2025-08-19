@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sabor Brasil - Brazilian Frozen Snacks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            color: #8d4004;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #d32f2f 0%, #ff5722 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffeb3b;
+        }
+
+        /* Sections */
+        section {
+            padding: 3rem 0;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        /* Landing Page */
+        .hero {
+            text-align: center;
+            background: linear-gradient(135deg, #ff8f00 0%, #ffb300 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(255, 143, 0, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #d32f2f 0%, #ff5722 100%);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #ff8f00;
+        }
+
+        .feature h3 {
+            color: #d32f2f;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* salgadinhos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .product-card {
+            background: transparent;
+            border-radius: 15px;
+            height: 500px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .product-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            background: white;
+            overflow: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+
+        .product-image {
+            height: 350px;
+            background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Fallback emoji when no image */
+        .product-image .emoji-fallback {
+            font-size: 3rem;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            color: #d32f2f;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff8f00;
+            margin-bottom: 1rem;
+        }
+
+        .flip-hint {
+            color: #ff8f00;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        .back-details {
+            color: #8d4004;
+            line-height: 1.6;
+        }
+
+        .back-details h4 {
+            color: #d32f2f;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .detail-item {
+            margin-bottom: 0.8rem;
+            text-align: left;
+        }
+
+        .detail-item strong {
+            color: #ff8f00;
+        }
+
+        /* Contact Page */
+        .contact-hero {
+            background: linear-gradient(135deg, #d32f2f 0%, #ff5722 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid #ff8f00;
+        }
+
+        .contact-info h3 {
+            color: #d32f2f;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .contact-item span {
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ffb74d;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff8f00;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #d32f2f 0%, #ff5722 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s;
+        }
+
+        .submit-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Frituz - Salgados Festa e Nhoques Recheados</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showSection('home')">Início</a></li>
+                <li><a href="#" onclick="showSection('salgadinhos')">Salgadinhos</a></li>
+                <li><a href="#" onclick="showSection('nhoques')">Nhoques</a></li>
+                <li><a href="#" onclick="showSection('doces')">Doces</a></li>
+                <li><a href="#" onclick="showSection('contact')">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Landing Page -->
+    <section id="home" class="active">
+        <div class="container">
+            <div class="hero">
+                <h1>Bem-vindos a Frituz</h1>
+                <p>Fábrica especializada em salgadinhos tamanho de festa e nhoques recheados</p>
+                <a href="#" class="cta-button" onclick="showSection('salgadinhos')">Veja todos os produtos</a>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <h3>🥶 Congelaods</h3>
+                    <p>Nossos produtos são congelados um a um e embalados conforme a necessidade de nossos clientes.</p>
+                </div>
+                <div class="feature">
+                    <h3>🇧🇷 Receitas autênticas</h3>
+                    <p>Todas as nossas receitas forão desenvolvidas pelo Chef Marcos Rodrigues.</p>
+                </div>
+                <div class="feature">
+                    <h3>🚚 Entregas</h3>
+                    <p>Entregas feitas em toda a Grande São Paulo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Salgadinhos -->
+    <section id="salgadinhos">
+        <div class="container">
+            <h2 style="text-align: center; color: #d32f2f; font-size: 2.5rem; margin-bottom: 2rem;">Salgadinhos</h2>
+            
+            <div class="product-grid">
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="coxinha frango.jpg" alt="Coxinha de Frango" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;">🍗</div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Coxinha de frango</h3>
+                                <p>Deliciosa massa feita de batata e um recheio de frango.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="coxinha frango com requeijao.jpg" alt="Coxinha de Frango com Requeijão" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;">🍗</div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Coxinha de frango com requeijão</h3>
+                                <p>Deliciosa massa feita de batata e um recheio de frango com requeijão cremoso.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="coxinha pernil.jpg" alt="Coxinha de Pernil" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;">🍗</div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Coxinha de pernil</h3>
+                                <p>Deliciosa massa feita de batata e um recheio de pernil desfiado.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="bolinho de queijo.jpg" alt="Bolinho de queijo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Bolinho de queijo</h3>
+                                <p>Deliciosa massa feita de batata e um recheio de queijo mussarela.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="queijo com alho.jpg" alt="Bolinho de queijo com alho" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Bolinho de queijo com alho</h3>
+                                <p>Deliciosa massa feita de batata e um recheio de queijo mussarela com alho frito.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="pamonha.jpg" alt="Bolinho de pamonha" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Bolinho de pamonha</h3>
+                                <p>Deliciosa massa feita de batata e milho e um recheio de requeijão com milho.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="brocolis.jpg" alt="Travesseirinho de brócolis" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Travesseirinho de brócolis</h3>
+                                <p>Incrível massa de batata recheada com nosso recheio de brócolis muito bem temperado.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="kibe.jpg" alt="Kibe" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Kibe</h3>
+                                <p>Kibe tradicional de carne moida e temperos clássicos.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="kibe recheado.jpg" alt="Kibe recheado com requeijão" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Kibe recheado com requeijão</h3>
+                                <p>Kibe feito de carne moida, temperos clássicos e recheado de requeijão cremoso.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="bolinho de bacalhau.jpg" alt="Bolinho de bacalhau" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Bolinho de bacalhau</h3>
+                                <p>Tradicional bolinho de bacalhau feito com batata.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <section id="nhoques">
+        <div class="container">
+            <h2 style="text-align: center; color: #d32f2f; font-size: 2.5rem; margin-bottom: 2rem;">Nhoques</h2>
+            
+            <div class="product-grid">
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="" alt="Nhoque de batata com queijo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Nhoque de batata com queijo</h3>
+                                <p>Nhoque super macio de batata recheado com queijo mussarela.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="product-image">
+                                <img src="" alt="Nhoque de batata com queijo e manjericão" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="emoji-fallback" style="display: none;"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Nhoque de batata com queijo</h3>
+                                <p>Nhoque super macio de batata recheado com queijo mussarela.</p>
+                                <!-- <div class="flip-hint">Clique para ver mais</div> -->
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="back-details">
+                                <h4>Product Details</h4>
+                                <div class="detail-item"><strong>Filling:</strong> Seasoned shredded chicken</div>
+                                <div class="detail-item"><strong>Coating:</strong> Golden breadcrumbs</div>
+                                <div class="detail-item"><strong>Package:</strong> 5kg frozen (approx. 100 units)</div>
+                                <div class="detail-item"><strong>Prep Method:</strong> Deep fry from frozen 4-5 minutes</div>
+                                <div class="detail-item"><strong>Best For:</strong> Appetizers, party snacks, café menu</div>
+                                <div class="flip-hint">Clique para voltar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Page -->
+    <section id="contact">
+        <div class="container">
+            <div class="contact-hero">
+                <h2>Fale Conosco</h2>
+                <p>Pronto para pedir ou quer tirar alguma dúvida? Nós adorariamos falar com voê!</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Informações de Contato</h3>
+                    <div class="contact-item">
+                        <span>📞</span>
+                        <div>
+                            <strong>Telefone:</strong><br>
+                            (555) 123-4567
+                        </div>
+                        
+                    </div>
+                    <div class="contact-item">
+                        <span>📧</span>
+                        <div>
+                            <strong>Email:</strong><br>
+                            orders@harvestkitchen.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <a aria-label="Chat on WhatsApp" href="https://wa.me/1XXXXXXXXXX">
+                            <img alt="Chat on WhatsApp" src="WhatsAppButtonGreenMedium.svg" />
+                        <a/>
+                    </div>
+                </div>
+<!-- 
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message:</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-button">Send Message</button>
+                    </form>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function flipCard(card) {
+            //card.classList.toggle('flipped');
+        }
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
